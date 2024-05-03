@@ -3,7 +3,7 @@ import VideoJSComponent from './VideoJSComponent';
 import WaveSurfer from 'wavesurfer.js';
 import firebase from './firebase.js';
 import { getDatabase, ref as ref_database, push } from 'firebase/database';
-import { getStorage, ref as ref_storage, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref as ref_storage, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -78,28 +78,29 @@ const Form = () => {
             const videoRef = ref_storage(storage, 'video/' + videoID);
 
             const newURLS = [];
-            uploadBytes(videoRef, file).then((snapshot) => {
+            uploadBytesResumable(videoRef, file).on('state_changed', function (snapshot) {
+                // Observe state change events such as progress, pause, and resume
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+                Swal.fire('', 'Video did not upload successfully.', 'error')
+            }, function () {
+                // Handle successful uploads on complete
                 getDownloadURL(videoRef).then((url) => {
                     newURLS.push(url);
                 });
-            });
-
-            // upload.on('state_changed', function (snapshot) {
-            //     // Observe state change events such as progress, pause, and resume
-            //     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            //     // stretch goal: make progress bar
-            //     switch (snapshot.state) {
-            //         case firebase.storage.TaskState.PAUSED:
-            //             break;
-            //         case firebase.storage.TaskState.RUNNING:
-            //             break;
-            //     }
-            // }, function (error) {
-            //     Swal.fire('', 'Video did not upload successfully.', 'error')
-            // }, function () {
-            //     Swal.fire('', 'Video is done uploading. You may now click submit.', 'success')
-            // });
+                Swal.fire('', 'Video is done uploading. You may now click submit.', 'success')
+            })
 
             setValues({
                 video: newURLS
