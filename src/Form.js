@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Form = () => {
     const playerRef = React.useRef(null);
@@ -222,6 +224,11 @@ const Form = () => {
             [name]: value,
         })
     }
+
+    // initialize animate on scroll
+    AOS.init({
+        duration: 1200,
+    })
 
     return (
         <div className="forms">
