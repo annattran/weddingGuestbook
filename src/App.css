@@ -1,38 +1,509 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Lora|Roboto+Condensed|Rouge+Script&display=swap');
+
+/* 
+font-family: 'Lora', serif;
+font-family: 'Roboto Condensed', sans-serif;
+font-family: 'Rouge Script', cursive; */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+summary {
+  display: block;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+audio,
+canvas,
+video {
+  display: inline-block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+audio:not([controls]) {
+  display: none;
+  height: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+[hidden] {
+  display: none;
+}
+
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+b,
+strong {
+  font-weight: 700;
+}
+
+dfn {
+  font-style: italic;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, serif;
+  font-size: 1em;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+q {
+  quotes: \201C \201D \2018 \2019;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -.5em;
+}
+
+sub {
+  bottom: -.25em;
+}
+
+img {
+  border: 0;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+fieldset {
+  border: 1px solid silver;
+  margin: 0 2px;
+  padding: .35em .625em .75em;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+}
+
+button,
+input {
+  line-height: normal;
+}
+
+button,
+html input[type=button],
+/* 1 */
+input[type=reset],
+input[type=submit] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button[disabled],
+input[disabled] {
+  cursor: default;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+input[type=search] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body,
+figure {
+  margin: 0;
+}
+
+legend,
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: '';
+  clear: both;
+  height: 0;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.visuallyHidden:not(:focus):not(:active) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(00 0 0);
+  overflow: hidden;
+}
+
+html {
+  font-size: 125%;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+ul,
+li,
+p {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* HEADER STYLES ------------------------------------------------------------- */
+header {
+  height: 100vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  position: relative;
+}
+
+h1,
+h2 {
+  font-family: 'Lora', serif;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, .1);
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+header .button {
+  position: fixed;
+  right: 40px;
+  top: 20px;
+  z-index: 1;
+}
+
+header .title {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  position: relative;
+  top: 30vh;
+  background: url(assets/foil.jpg);
+  background-position: center;
+  background-clip: text;
+  text-align: center;
+}
+
+header .instructions {
+  width: 50%;
+  font-size: 2rem;
+  font-family: 'Rouge Script', cursive;
+}
+
+header img.leaf {
+  width: 300px;
+  position: absolute;
+  z-index: -1;
+}
+
+header img.leaf.left {
+  transform: scaleY(-1);
+  transform: rotate(230deg);
+  top: -100px;
+}
+
+header img.leaf.right {
+  right: 0;
+  bottom: -100px;
+  transform: scaleY(-1);
+  transform: rotate(50deg);
+}
+
+/* COMMENT CARD STYLES ------------------------------------------------------------- */
+.commentsSection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 100px 0px;
+}
+
+.commentCard {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 10px;
+  padding: 20px;
+  background: white;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
+  border: 1px solid rgba(0, 0, 0, .1);
+  font-family: 'Roboto Condensed', sans-serif;
+  transition: all 1s;
+}
+
+.commentCard:hover {
+  transform: scale(1.1);
+}
+
+.writtenComment {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeStamp {
+  padding: 5px;
+  background: #547972;
   color: white;
+  align-self: flex-end;
 }
 
-.App-link {
-  color: #61dafb;
+/* FORM STYLES ------------------------------------------------------------- */
+button {
+  background: #547972;
+  padding: 10px 20px;
+  box-shadow: 3px 3px rgba(0, 0, 0, .5);
+  color: white;
+  cursor: pointer;
+  transition: all .3s;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+button:hover {
+  background: white;
+  color: #547972;
+  box-shadow: none;
+}
+
+form {
+  border: 1px solid rgba(0, 0, 0, .5);
+  padding: 40px 0px;
+  margin: 0 auto;
+  font-family: 'Roboto Condensed', sans-serif;
+  width: 500px;
+  position: fixed;
+  z-index: 1;
+  max-width: 100%;
+  background: white;
+  top: calc(50% - 210px);
+  left: calc(50% - 250px);
+}
+
+form div {
+  margin: 0 auto;
+}
+
+form p {
+  text-align: left;
+  display: inline-block;
+}
+
+textarea {
+  overflow: auto;
+  resize: none;
+  margin-bottom: 20px;
+}
+
+label,
+textarea,
+input,
+form p {
+  width: 400px;
+}
+
+span.color {
+  color: #547972;
+}
+
+
+/* FIRST FORM ........................ */
+.firstForm {
+  text-align: center;
+  display: none;
+}
+
+p.stepOne {
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+button[type=next],
+button[type=submit] {
+  width: 150px;
+  align-self: center;
+  margin-top: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.close:hover {
+  color: #547972;
+}
+
+/* SECOND FORM ........................ */
+.secondForm {
+  display: none;
+}
+
+.inputs {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+p.stepTwo {
+  padding: 20px 0px 10px 0px;
+}
+
+p.stepThree {
+  padding-top: 20px;
+}
+
+
+/* FOOTER STYLES ------------------------------------------------------------- */
+footer {
+  text-align: center;
+  padding: 20px 0px;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+
+/* MEDIA QUERIES ------------------------------------------------------------- */
+
+@media (max-width:1280px) {
+  html {
+    font-size: 100%;
   }
 }
+
+@media (max-width:745px) {
+  header img.leaf {
+    width: 250px;
+  }
+
+  header .title {
+    top: 25vh;
+  }
+
+  header .instructions {
+    width: 60%;
+  }
+}
+
+@media (max-width:568px) {
+  header .title {
+    top: 15vh;
+  }
+}
+
+@media (max-width:530px) {
+  header .instructions {
+    width: 70%;
+  }
+
+  form {
+    width: 410px;
+    left: calc(50% - 205px);
+  }
+
+  label,
+  textarea,
+  input,
+  form p {
+    width: 320px;
+  }
+}
+
+/* OPTIMIZED DOWN TO SMALL TABLETS... */
+/* NOT RECOMMENDED FOR MOBILE USE */

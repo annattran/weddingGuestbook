@@ -1,23 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
+import firebase from './firebase.js';
+import { getDatabase, ref, onValue } from 'firebase/database';
+import { useState, useEffect } from 'react';
+// import components
+import Header from './Header.js';
+import Form from './Form.js';
+import List from './List.js';
+import Footer from './Footer.js'
 
 function App() {
+  const [comments, setComments] = useState('');
+
+  useEffect(() => {
+    const database = getDatabase(firebase);
+    const dbRef = ref(database);
+    const newComments = [];
+
+    onValue(dbRef, (snapshot) => {
+      const database = snapshot.val();
+
+      console.log(database)
+
+      for (let key in database) {
+        const commentObject = {
+          uniqueID: key,
+          guestName: database[key].name,
+          guestComment: database[key].comment,
+          timeStamp: database[key].time,
+          videoURL: database[key].video
+        }
+        newComments.push(commentObject);
+      }
+    })
+
+    setComments(newComments);
+
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <Form />
+      <List listItems={comments} />
+      <Footer />
     </div>
   );
 }
