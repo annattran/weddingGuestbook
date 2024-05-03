@@ -125,48 +125,55 @@ const Form = () => {
 
     const [values, setValues] = useState(initialValues);
 
+    const videoPlayer = playerRef.current;
+
     // custom event handling
-    const onNext = (event) => {
+    const resetValues = () => {
+        setValues({
+            guestName: '',
+            guestComment: '',
+            timeStamp: '',
+            video: []
+        })
+        document.querySelector('#guestName').value = '';
+        document.querySelector('#guestComment').value = '';
+        videoPlayer.record().reset();
+        videoPlayer.recordedData = null;
+    }
+
+    const closeForm = () => {
+        document.querySelector('.firstForm').style.display = 'none';
+        document.querySelector('.secondForm').style.display = 'none';
+        document.querySelector('.commentButton').style.display = 'block';
+    }
+
+    const openSecondForm = (event) => {
         event.preventDefault();
-        const player = playerRef.current;
-        const firstForm = document.querySelector('.firstForm');
-        const secondForm = document.querySelector('.secondForm');
 
-        console.log(player.recordedData)
-
-        if (player.recordedData !== undefined && player.recordedData !== null) {
-            firstForm.style.display = 'none';
-            secondForm.style.display = 'flex';
+        if (videoPlayer.recordedData !== undefined && videoPlayer.recordedData !== null) {
+            document.querySelector('.firstForm').style.display = 'none';
+            document.querySelector('.secondForm').style.display = 'flex';
         } else {
             Swal.fire('', 'No video recorded. Please try again.', 'warning');
         }
     }
 
-    const onClose = () => {
-        const player = playerRef.current;
-        const firstForm = document.querySelector('.firstForm');
-        const commentButton = document.querySelector('.commentButton');
-
-        if (player.recordedData === undefined && player.recordedData !== null) {
-            firstForm.style.display = 'none';
-            commentButton.style.display = 'block';
+    const confirmClose = () => {
+        if (videoPlayer.recordedData === undefined || videoPlayer.recordedData === null) {
+            closeForm();
         } else if (window.confirm('You recorded a video but have not submitted. Clicking ok will erase your video.') === true) {
-            firstForm.style.display = 'none';
-            commentButton.style.display = 'block';
-            player.record().reset();
+            closeForm();
+            resetValues();
         }
     }
 
-    const onSubmit = (event) => {
+    const submitForm = (event) => {
         event.preventDefault();
-        const player = playerRef.current;
         const database = getDatabase(firebase);
         const dbRef = ref_database(database);
         const nameToBeAdded = values.guestName;
         const commentToBeAdded = values.guestComment;
         const videoToBeAdded = values.video;
-        const secondForm = document.querySelector('.secondForm')
-        const commentButton = document.querySelector('.commentButton')
 
         const formatDate = function (date) {
             const time = new Date(date);
@@ -188,9 +195,8 @@ const Form = () => {
             return `${h}:${m} ${dd}`
         }
 
-        console.log(player.recordedData)
-
-        if (player.recordedData !== undefined && player.recordedData !== null
+        if (videoPlayer.recordedData !== undefined
+            && videoPlayer.recordedData !== null
             && nameToBeAdded !== ''
             && commentToBeAdded !== '') {
             push(dbRef, {
@@ -199,24 +205,14 @@ const Form = () => {
                 'time': formatDate(Date.now()),
                 'video': videoToBeAdded
             })
-            setValues({
-                guestName: '',
-                guestComment: '',
-                timeStamp: '',
-                video: []
-            })
-            event.target.querySelector('#guestName').value = '';
-            event.target.querySelector('#guestComment').value = '';
-            player.record().reset();
-            player.recordedData = null;
-            secondForm.style.display = 'none';
-            commentButton.style.display = 'block';
+            resetValues();
+            closeForm();
         } else {
             Swal.fire('', 'One or more fields are empty.', 'warning')
         }
     }
 
-    const onChange = (event) => {
+    const getInput = (event) => {
         const name = event.target.name;
         const value = event.target.value;
 
@@ -225,23 +221,25 @@ const Form = () => {
             [name]: value,
         })
     }
+
     return (
         <div className="forms">
-            <form onSubmit={onNext} className="firstForm">
-                <FontAwesomeIcon icon={faXmark} className="close" onClick={onClose} />
+            <form onSubmit={openSecondForm} className="firstForm">
+                <FontAwesomeIcon icon={faXmark} className="close" onClick={confirmClose} />
                 <div className="recordVideo">
                     <p className="stepOne"><span className="color">Step 1:</span> Record a video message</p>
                     <VideoJSComponent options={videoJsOptions} onReady={handlePlayerReady} />
                     <button type="next">Next</button>
                 </div>
             </form>
-            <form onSubmit={onSubmit} className="secondForm">
+            <form onSubmit={submitForm} className="secondForm">
+                <FontAwesomeIcon icon={faXmark} className="close" onClick={confirmClose} />
                 <div className="inputs">
                     <p className="stepTwo"><span className="color">Step 2:</span> Write a comment and sign your name</p>
                     <label htmlFor="guestComment">Message to the newly weds:</label>
-                    <textarea id="guestComment" name="guestComment" type="text" onChange={onChange} value={values.comment} />
+                    <textarea id="guestComment" name="guestComment" type="text" onChange={getInput} value={values.comment} />
                     <label htmlFor="guestName">Signed:</label>
-                    <input id="guestName" name="guestName" type="text" onChange={onChange} value={values.name} />
+                    <input id="guestName" name="guestName" type="text" onChange={getInput} value={values.name} />
                     <p className="stepThree"><span className="color">Step 3:</span> Submit</p>
                     <button type="submit">Submit</button>
                 </div>
