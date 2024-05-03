@@ -2,17 +2,10 @@ import leaf from './assets/leaf.png';
 
 const Header = () => {
     const openForm = () => {
-        const firstForm = document.querySelector('.firstForm')
-        const commentButton = document.querySelector('.commentButton')
-
-        firstForm.style.display = 'flex';
-
-        if (firstForm.style.display === 'flex') {
-            commentButton.style.display = 'none';
-        } else {
-            commentButton.style.display = 'block';
-        }
+        document.querySelector('.firstForm').style.display = 'flex';
+        document.querySelector('.commentButton').style.display = 'none';
     }
+
     return (
         <header>
             <img src={leaf} className="left leaf" alt="Green leaves in watercolor - positioned on the top left corner to frame the title." />
@@ -21,8 +14,8 @@ const Header = () => {
                 <button onClick={openForm} className="commentButton"> Add Comment</button>
             </div>
             <div className="title">
-                <h1>Jack ❤ Jill</h1>
-                <h2>November 28th 2019</h2>
+                <h1>John ❤ Jane</h1>
+                <h2>May 3rd 2024</h2>
                 <div className="instructions">
                     <p>Record a video with your well wishes, something funny, words of advice, or maybe date night ideas. When we look back we'll be reminded of all the people who helped celebrate our special day.</p>
                 </div>
