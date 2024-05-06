@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/weddingGuestbook/static/css/main.7fc4e338.css",
+    "main.js": "/weddingGuestbook/static/js/main.f097a70c.js",
+    "static/js/453.18aaafb8.chunk.js": "/weddingGuestbook/static/js/453.18aaafb8.chunk.js",
+    "static/media/foil.jpg": "/weddingGuestbook/static/media/foil.47da3cfb1af5fa58c801.jpg",
+    "static/media/leaf.png": "/weddingGuestbook/static/media/leaf.096608fa6febe13a678d.png",
+    "index.html": "/weddingGuestbook/index.html",
+    "main.7fc4e338.css.map": "/weddingGuestbook/static/css/main.7fc4e338.css.map",
+    "main.f097a70c.js.map": "/weddingGuestbook/static/js/main.f097a70c.js.map",
+    "453.18aaafb8.chunk.js.map": "/weddingGuestbook/static/js/453.18aaafb8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7fc4e338.css",
+    "static/js/main.f097a70c.js"
+  ]
+}
