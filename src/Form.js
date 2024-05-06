@@ -72,8 +72,6 @@ const Form = () => {
             // can be downloaded by the user, stored on server etc.
             console.log('finished recording: ', player.recordedData);
 
-            Swal.fire('', 'Thank you for your video! Please wait until the video is done uploading before clicking submit!', 'info')
-
             const file = player.recordedData;
             const storage = getStorage();
             const videoID = file.name;
@@ -85,6 +83,19 @@ const Form = () => {
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
+
+                if (Math.round(progress) === 100) {
+                    Swal.close();
+                } else {
+                    Swal.fire({
+                        title: "Preparing video for upload...",
+                        html: `<b>${Math.round(progress)}%</b>`,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    })
+                }
+
                 switch (snapshot.state) {
                     case 'paused':
                         console.log('Upload is paused');
@@ -95,13 +106,12 @@ const Form = () => {
                 }
             }, function (error) {
                 // Handle unsuccessful uploads
-                Swal.fire('', 'Video did not upload successfully.', 'error')
+                Swal.fire('', 'Something went wrong. Please try again.', 'error')
             }, function () {
                 // Handle successful uploads on complete
                 getDownloadURL(videoRef).then((url) => {
                     newURLS.push(url);
                 });
-                Swal.fire('', 'Video is done uploading. You may now click submit.', 'success')
             })
 
             setValues({
@@ -112,10 +122,12 @@ const Form = () => {
         // error handling
         player.on('error', (element, error) => {
             console.warn(error);
+            Swal.fire('', 'Something went wrong. Please try again.', 'error')
         });
 
         player.on('deviceError', () => {
             console.error('device error:', player.deviceErrorCode);
+            Swal.fire('', 'Something went wrong. Please try again.', 'error')
         });
     };
 
