@@ -115,6 +115,7 @@ const Form = () => {
             })
 
             setValues({
+                ...values,
                 video: newURLS
             })
         });
@@ -134,7 +135,6 @@ const Form = () => {
     const initialValues = {
         guestName: '',
         guestComment: '',
-        time: '',
         video: []
     }
 
@@ -147,7 +147,6 @@ const Form = () => {
         setValues({
             guestName: '',
             guestComment: '',
-            timeStamp: '',
             video: []
         })
         document.querySelector('#guestName').value = '';
