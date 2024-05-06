@@ -77,7 +77,6 @@ const Form = () => {
             const videoID = file.name;
             const videoRef = ref_storage(storage, 'video/' + videoID);
 
-            const newURLS = [];
             uploadBytesResumable(videoRef, file).on('state_changed', function (snapshot) {
                 // Observe state change events such as progress, pause, and resume
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -110,14 +109,13 @@ const Form = () => {
             }, function () {
                 // Handle successful uploads on complete
                 getDownloadURL(videoRef).then((url) => {
-                    newURLS.push(url);
+                    setValues({
+                        ...values,
+                        video: url
+                    })
                 });
             })
 
-            setValues({
-                ...values,
-                video: newURLS
-            })
         });
 
         // error handling
@@ -135,7 +133,7 @@ const Form = () => {
     const initialValues = {
         guestName: '',
         guestComment: '',
-        video: []
+        video: ''
     }
 
     const [values, setValues] = useState(initialValues);
@@ -147,7 +145,7 @@ const Form = () => {
         setValues({
             guestName: '',
             guestComment: '',
-            video: []
+            video: ''
         })
         document.querySelector('#guestName').value = '';
         document.querySelector('#guestComment').value = '';
